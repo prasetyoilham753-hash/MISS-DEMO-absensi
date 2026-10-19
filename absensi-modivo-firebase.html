@@ -2131,7 +2131,8 @@ document.getElementById('btnHitungRange').addEventListener('click', async ()=>{
       '<p class="note" style="margin-top:0;">Tampilan kalender hanya tersedia saat memilih satu nama, bukan "Semua Host".</p>';
 
     const rows = NAMES.map(n=>{
-      const total = log.filter(r=>sameName(r.name, n) && dates.includes(r.date)).length;
+      const uniqueDates = dates.filter(d => log.some(r => sameName(r.name, n) && r.date === d));
+      const total = uniqueDates.length;
       const cls = isAdminName(n) ? ' class="name name-admin"' : ' class="name"';
       return `<tr><td${cls}>${nameCellHtml(n)}</td><td>${total}</td><td>${dates.length-total}</td></tr>`;
     }).join('');
@@ -2143,12 +2144,20 @@ document.getElementById('btnHitungRange').addEventListener('click', async ()=>{
     document.getElementById('rangeAllTableWrap').classList.add('hidden');
 
     const recs = log.filter(r=>sameName(r.name, name) && dates.includes(r.date));
-    const totalHadir = recs.length;
+    const recMap = {};
+    recs.forEach(r=>{ recMap[r.date] = r; });
+
+    const uniqueDatesPresent = dates.filter(d => recMap[d]);
+    const totalHadir = uniqueDatesPresent.length;
     const totalHari = dates.length;
     const totalOff = totalHari - totalHadir;
 
     const perShift = {};
-    recs.forEach(r=>{ const k = r.shift || '-'; perShift[k] = (perShift[k]||0)+1; });
+    uniqueDatesPresent.forEach(d=>{
+      const r = recMap[d];
+      const k = r.shift || '-';
+      perShift[k] = (perShift[k]||0)+1;
+    });
     const shiftChips = Object.entries(perShift)
       .filter(([k])=>k!=='-')
       .map(([k,v])=>`<span class="shift-pill ${k}" style="margin-right:6px;">${k} · ${v}x</span>`).join('');
@@ -2161,8 +2170,6 @@ document.getElementById('btnHitungRange').addEventListener('click', async ()=>{
     document.getElementById('rangeShiftBreakdown').innerHTML = shiftChips ||
       '<span style="color:var(--text-muted);font-size:12px;">Tidak ada data shift pada rentang ini.</span>';
 
-    const recMap = {};
-    recs.forEach(r=>{ recMap[r.date] = r; });
     document.getElementById('rangeCalendarWrap').innerHTML = calendarHtml(dates, recMap);
   }
 });
