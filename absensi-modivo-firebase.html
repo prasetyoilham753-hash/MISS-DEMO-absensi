@@ -1247,20 +1247,13 @@ import {
   getFirestore, doc, getDoc, setDoc, onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCuYFn_ryKoowVwNCe9Ar9ElRn7jYCEIUQ",
-  authDomain: "absensi-modivo.firebaseapp.com",
-  projectId: "absensi-modivo",
-  storageBucket: "absensi-modivo.firebasestorage.app",
-  messagingSenderId: "549570402579",
-  appId: "1:549570402579:web:c8ae75838cbc51092fa2e6"
-};
+import firebaseConfig from './firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 
-const LOG_DOC = doc(db, 'absensi', 'log');
-const SETTINGS_DOC = doc(db, 'absensi', 'settings');
+const LOG_DOC = doc(db, 'absensi_modivo_c583f679', 'log');
+const SETTINGS_DOC = doc(db, 'absensi_modivo_c583f679', 'settings');
 
 const DEFAULT_HOSTS = ['Ali', 'Amat', 'Mala', 'Sisil'];
 const ADMIN_NAME = 'Bintang';
