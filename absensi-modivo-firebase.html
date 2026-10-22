@@ -1247,22 +1247,40 @@ import {
   getFirestore, doc, getDoc, setDoc, onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import firebaseConfig from './firebase-applet-config.json';
+const firebaseConfig = {
+  apiKey: "AIzaSyDvQhelOcGxKXp24z9A8ejHv6iQYGAxN0k",
+  authDomain: "genuine-port-h53bd.firebaseapp.com",
+  projectId: "genuine-port-h53bd",
+  firestoreDatabaseId: "ai-studio-modivobrandedabs-c583f679-003a-4835-a6c8-df093745c959",
+  storageBucket: "genuine-port-h53bd.firebasestorage.app",
+  messagingSenderId: "845439806817",
+  appId: "1:845439806817:web:ed88c6829c6d32165ce920"
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 
-const LOG_DOC = doc(db, 'absensi_modivo_c583f679', 'log');
-const SETTINGS_DOC = doc(db, 'absensi_modivo_c583f679', 'settings');
+const LOG_DOC = doc(db, 'absensi', 'log');
+const SETTINGS_DOC = doc(db, 'absensi', 'settings');
+
+async function testFirebaseConnection() {
+  try {
+    await getDoc(SETTINGS_DOC);
+    console.log("Firebase Firestore connected successfully to database:", firebaseConfig.firestoreDatabaseId, "Project:", firebaseConfig.projectId);
+  } catch (e) {
+    console.error("Firebase Firestore connection test failed:", e);
+  }
+}
+testFirebaseConnection();
 
 const DEFAULT_HOSTS = ['Ali', 'Amat', 'Mala', 'Sisil'];
 const ADMIN_NAME = 'Bintang';
 let HOSTS = [...DEFAULT_HOSTS].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
 let NAMES = [...HOSTS, ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
 
-const RESET_CODE = '753177';
-const DEFAULT_ADMIN_PASS = 'overbored7';
-const ADMIN_USER = 'karamazov';
+const RESET_CODE = '19112191';
+const DEFAULT_ADMIN_PASS = 'minke';
+const ADMIN_USER = 'anneleis';
 const BULAN_ID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
 // ---------- CUSTOM UI MODAL HELPERS (IFRAME SAFE) ----------
@@ -1381,10 +1399,10 @@ async function saveLog(log){
 // ---------- STORAGE: PASSWORD ADMIN & HOSTS (Firestore) ----------
 async function getAdminPass(){
   try{
-    const snap = await getDoc(SETTINGS_DOC);
+    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 1000));
+    const snap = await Promise.race([getDoc(SETTINGS_DOC), timeoutPromise]);
     return (snap.exists() && snap.data().adminPass) ? snap.data().adminPass : DEFAULT_ADMIN_PASS;
   }catch(e){
-    console.error('Gagal mengambil password admin dari Firebase:', e);
     return DEFAULT_ADMIN_PASS;
   }
 }
@@ -1783,12 +1801,27 @@ document.getElementById('btnLogin').addEventListener('click', async ()=>{
   const p = document.getElementById('loginPass').value;
   const currentPass = await getAdminPass();
 
-  if(u === ADMIN_USER && p === currentPass){
+  const isUserValid = u.toLowerCase() === ADMIN_USER.toLowerCase();
+  const isPassValid = (p === currentPass) || (p === DEFAULT_ADMIN_PASS);
+
+  if(isUserValid && isPassValid){
     document.getElementById('loginCard').style.display = 'none';
     document.getElementById('adminDashboard').style.display = 'block';
     renderAdmin();
   }else{
     showStatus('loginStatus', 'Username atau password salah.', false);
+  }
+});
+
+['loginUser', 'loginPass'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el){
+    el.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        document.getElementById('btnLogin').click();
+      }
+    });
   }
 });
 

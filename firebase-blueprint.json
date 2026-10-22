@@ -45,11 +45,11 @@
     }
   },
   "firestore": {
-    "/absensi_modivo_c583f679/settings": {
+    "/absensi/settings": {
       "schema": { "$ref": "#/entities/Settings" },
       "description": "App settings configuration"
     },
-    "/absensi_modivo_c583f679/log": {
+    "/absensi/log": {
       "schema": { "$ref": "#/entities/AttendanceRecord" },
       "description": "Attendance log records collection"
     }
