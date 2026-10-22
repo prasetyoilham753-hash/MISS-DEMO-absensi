@@ -3,30 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modivo Staff Attendance</title>
-<meta name="description" content="Luxury branded employee attendance and shift management system for Modivo staff with real-time Firebase sync, attendance logging, monthly recap, and admin tools.">
-<meta property="og:title" content="Modivo Staff Attendance">
-<meta property="og:description" content="Luxury branded employee attendance and shift management system for Modivo staff with real-time Firebase sync, attendance logging, monthly recap, and admin tools.">
+<title>MISSTHEISM Staff Attendance</title>
+<meta name="description" content="Luxury branded employee attendance and shift management system for MISSTHEISM staff with real-time Firebase sync, attendance logging, monthly recap, and admin tools.">
+<meta property="og:title" content="MISSTHEISM Staff Attendance">
+<meta property="og:description" content="Luxury branded employee attendance and shift management system for MISSTHEISM staff with real-time Firebase sync, attendance logging, monthly recap, and admin tools.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-main:#080705;
-    --bg-card:rgba(20, 18, 16, 0.85);
-    --card-border:rgba(205, 167, 93, 0.35);
-    --gold:#cda75d;
-    --gold-light:#f2e0ac;
-    --gold-dim:#8a6f3a;
-    --gold-grad: linear-gradient(135deg, #f6e8bd 0%, #cda75d 50%, #8a6f3a 100%);
-    --silver:#d9d5c8;
-    --silver-dim:#9a9585;
-    --text:#ded8c8;
-    --text-muted:#8f8977;
-    --line:#26231a;
+    --bg-card:rgba(18, 18, 18, 0.9);
+    --card-border:rgba(255, 255, 255, 0.16);
+    --gold:#ffffff;
+    --gold-light:#ffffff;
+    --gold-dim:#94a3b8;
+    --gold-grad: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%);
+    --silver:#ffffff;
+    --silver-dim:#94a3b8;
+    --text:#f8fafc;
+    --text-muted:#8e9aa8;
+    --line:rgba(255, 255, 255, 0.1);
     --a:#6f6f6f; --b:#2fa9d1; --c:#d1a92f; --d:#b03a8f;
     --ok:#3c9d70; --ok-text:#82d8ab;
-    --danger:#b23a2e; --danger-text:#e79184;
-    --admin-gold:#ffd876;
+    --danger:#ef4444; --danger-text:#fca5a5;
+    --admin-gold:#ffffff;
   }
   *{box-sizing:border-box;}
   body{
@@ -95,14 +95,14 @@
     outline:none !important;
     border-color:var(--gold);
     -webkit-tap-highlight-color:transparent;
-    box-shadow:0 8px 24px rgba(205,167,93,0.35);
+    box-shadow:0 8px 24px rgba(255,255,255,0.15);
   }
   .theme-toggle-btn:hover{
-    background:rgba(30, 26, 19, 0.95);
+    background:rgba(32, 32, 32, 0.95);
     border-color:var(--gold);
     color:var(--admin-gold);
     transform:scale(1.08);
-    box-shadow:0 8px 24px rgba(205,167,93,0.35);
+    box-shadow:0 8px 24px rgba(255,255,255,0.25);
   }
   .theme-toggle-btn:active{
     transform:scale(0.95);
@@ -125,68 +125,31 @@
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
   }
-  .logo-ring{
-    width:78px;
-    height:78px;
-    border-radius:50%;
-    margin:0 auto 14px;
+  .brand-logo-wrap{
     display:flex;
-    align-items:center;
     justify-content:center;
-    position:relative;
-    background:transparent;
-    filter:drop-shadow(0 6px 16px rgba(0,0,0,0.5));
-    transition:transform 0.3s ease;
+    align-items:center;
+    margin:0 auto 12px;
+    padding:4px 0;
   }
-  .logo-ring:hover{
-    transform:scale(1.05);
-  }
-  /* Outer Gold Ring */
-  .logo-ring::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    border-radius:50%;
-    padding:2.5px;
-    background:var(--gold-grad);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-  /* Inner Accent Gold Ring */
-  .logo-ring::after{
-    content:'';
-    position:absolute;
-    inset:5px;
-    border-radius:50%;
-    padding:1.2px;
-    background:var(--gold-grad);
-    opacity:0.85;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-  .logo-ring-text{
-    font-family:'Cormorant Garamond', Georgia, serif;
-    font-size:48px;
-    font-weight:700;
-    line-height:1;
-    margin-top:-1px;
-    background:var(--gold-grad);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+  .brand-logo-svg{
+    width:100%;
+    max-width:330px;
+    height:auto;
+    display:block;
+    filter:drop-shadow(0 4px 18px rgba(0,0,0,0.95)) drop-shadow(0 0 16px rgba(255,255,255,0.25));
+    transition:transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
     user-select:none;
     -webkit-user-select:none;
   }
-  header h1{
-    margin:0;font-size:42px;font-weight:700;letter-spacing:7px;text-transform:uppercase;
-    background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  .brand-logo-svg:hover{
+    transform:scale(1.035);
+    filter:drop-shadow(0 8px 28px rgba(0,0,0,1)) drop-shadow(0 0 24px rgba(255,255,255,0.5));
   }
   header .sub{
-    font-size:12px;letter-spacing:6px;color:var(--silver-dim);margin-top:8px;text-transform:uppercase;font-weight:300;
+    font-size:11px;letter-spacing:6px;color:var(--silver-dim);margin-top:10px;text-transform:uppercase;font-weight:300;
   }
-  header p{margin:18px auto 0;color:var(--text-muted);font-size:13px;letter-spacing:.3px;max-width:480px;line-height:1.5;}
+  header p{margin:16px auto 0;color:var(--text-muted);font-size:13px;letter-spacing:.3px;max-width:480px;line-height:1.5;}
 
   .wrap{max-width:1050px;margin:0 auto;padding:32px 20px;}
   .card{
@@ -222,7 +185,7 @@
     width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:5px;font-size:14px;min-width:160px;
     font-family:'Jost',sans-serif;background:rgba(26,24,21,0.9);color:var(--text);transition:all .2s ease;
   }
-  select:focus,input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 6px rgba(205,167,93,.2);background:#1e1c17;}
+  select:focus,input:focus{outline:none;border-color:#ffffff;box-shadow:0 0 8px rgba(255,255,255,.25);background:#1a1a1a;}
   .readonly-field{
     padding:10px 12px;border:1px solid var(--line);border-radius:5px;font-size:14px;
     background:rgba(16,15,12,0.9);color:var(--gold-light);min-width:200px;letter-spacing:.5px;
@@ -268,13 +231,13 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   .custom-select-trigger:hover, .custom-select-container.open .custom-select-trigger {
-    border-color: var(--gold);
-    background: rgba(32, 29, 24, 0.98);
-    box-shadow: 0 0 10px rgba(205, 167, 93, 0.25);
+    border-color: #ffffff;
+    background: rgba(30, 30, 30, 0.98);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
   }
   .custom-select-container.open .custom-select-trigger .custom-select-arrow {
     transform: rotate(180deg);
-    stroke: var(--gold);
+    stroke: #ffffff;
   }
   .custom-select-arrow {
     stroke: var(--gold-dim);
@@ -288,12 +251,12 @@
     left: 0;
     right: 0;
     z-index: 999999 !important;
-    background: #14120f;
-    border: 1px solid var(--card-border);
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 8px;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95), 0 0 20px rgba(205, 167, 93, 0.25);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95), 0 0 20px rgba(255, 255, 255, 0.08);
     max-height: 240px;
     overflow-y: auto;
     padding: 6px;
@@ -319,29 +282,29 @@
     justify-content: space-between;
   }
   .custom-select-option:hover {
-    background: rgba(205, 167, 93, 0.15);
-    color: var(--gold-light);
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
   }
   .custom-select-option.selected {
-    background: linear-gradient(135deg, rgba(205,167,93,0.25) 0%, rgba(138,111,58,0.2) 100%);
-    color: var(--gold-light);
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
     font-weight: 600;
   }
   .custom-select-option.selected::after {
     content: '✓';
     font-size: 12px;
-    color: var(--gold);
+    color: #ffffff;
     margin-left: 8px;
   }
   .custom-select-dropdown::-webkit-scrollbar {
     width: 5px;
   }
   .custom-select-dropdown::-webkit-scrollbar-track {
-    background: rgba(10, 9, 7, 0.5);
+    background: rgba(18, 18, 18, 0.5);
     border-radius: 4px;
   }
   .custom-select-dropdown::-webkit-scrollbar-thumb {
-    background: var(--gold-dim);
+    background: #64748b;
     border-radius: 4px;
   }
 
@@ -351,11 +314,11 @@
   }
   button:hover{filter:brightness(1.1);transform:translateY(-1px);}
   button:active{transform:translateY(0);}
-  .btn-in{background:var(--gold-grad);color:#141008;box-shadow:0 3px 12px rgba(205,167,93,.25);}
-  .btn-export{background:transparent;color:var(--gold-light);border:1px solid var(--gold-dim);}
-  .btn-export:hover{background:rgba(205,167,93,.15);}
-  .btn-link{background:none;color:var(--gold-dim);text-decoration:underline;padding:4px 0;font-weight:500;text-transform:none;letter-spacing:.3px;}
-  .btn-link:hover{color:var(--gold-light);transform:none;}
+  .btn-in{background:#ffffff;color:#000000;font-weight:700;box-shadow:0 3px 14px rgba(255,255,255,.25);}
+  .btn-export{background:transparent;color:#ffffff;border:1px solid rgba(255,255,255,.35);}
+  .btn-export:hover{background:rgba(255,255,255,.12);border-color:#ffffff;}
+  .btn-link{background:none;color:#cbd5e1;text-decoration:underline;padding:4px 0;font-weight:500;text-transform:none;letter-spacing:.3px;}
+  .btn-link:hover{color:#ffffff;transform:none;}
   .btn-danger{background:var(--danger);color:#f4e9e6;}
   .btn-danger:hover{box-shadow:0 3px 12px rgba(178,58,46,.35);}
   .btn-ghost{background:rgba(28,26,21,0.85);color:var(--text-muted);border:1px solid var(--line);}
@@ -393,7 +356,7 @@
     backdrop-filter:blur(8px);
   }
   .summary .box::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:var(--gold-dim);}
-  .summary .box .num{font-size:32px;font-weight:700;font-family:'Cormorant Garamond',serif;color:var(--gold-light);text-shadow:0 0 8px rgba(205,167,93,.2);}
+  .summary .box .num{font-size:32px;font-weight:700;font-family:'Cormorant Garamond',serif;color:var(--gold-light);text-shadow:0 0 10px rgba(255,255,255,.25);}
   .summary .box .lbl{font-size:10.5px;color:var(--text-muted);margin-top:6px;letter-spacing:1px;text-transform:uppercase;}
 
   .edit-input{width:100px;padding:7px 8px;font-size:12.5px;min-width:auto;}
@@ -415,7 +378,7 @@
 
   /* ---------- SEL REKAP YANG BISA DIUBAH ADMIN ---------- */
   .att-cell{cursor:pointer;}
-  .att-cell:hover{background:rgba(205,167,93,.22) !important;}
+  .att-cell:hover{background:rgba(255,255,255,.15) !important;}
 
   /* ---------- MODALS ---------- */
   .modal-overlay{
@@ -463,11 +426,20 @@
   </div>
 
   <header>
-    <div class="logo-ring">
-      <span class="logo-ring-text">M</span>
+    <div class="brand-logo-wrap">
+      <svg class="brand-logo-svg" viewBox="0 0 592 208" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" role="img" aria-label="MISSTHEISM">
+        <defs>
+          <linearGradient id="misstheismGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="45%" stop-color="#f8fafc" />
+            <stop offset="80%" stop-color="#e2e8f0" />
+            <stop offset="100%" stop-color="#cbd5e1" />
+          </linearGradient>
+        </defs>
+        <path d="M 316 160 L 316 181 L 317 181 L 317 183 L 319 184 L 319 186 L 320 186 L 320 188 L 321 188 L 321 189 L 323 189 L 323 187 L 325 186 L 325 184 L 326 184 L 326 182 L 328 181 L 328 160 Z M 69 69 L 67 69 L 66 71 L 64 71 L 64 72 L 63 72 L 63 73 L 62 73 L 62 74 L 60 75 L 60 77 L 58 78 L 58 81 L 57 81 L 57 182 L 59 183 L 59 185 L 60 185 L 60 187 L 61 187 L 61 189 L 64 189 L 64 187 L 66 186 L 66 184 L 67 184 L 67 182 L 68 182 L 68 180 L 69 180 Z M 129 86 L 130 86 L 130 85 L 145 85 L 145 86 L 146 86 L 146 179 L 147 179 L 147 182 L 148 182 L 148 184 L 151 184 L 151 185 L 153 185 L 153 184 L 156 184 L 156 183 L 157 183 L 157 181 L 158 181 L 158 83 L 157 83 L 157 79 L 156 79 L 156 77 L 154 76 L 154 74 L 152 74 L 152 72 L 150 72 L 150 71 L 149 71 L 148 69 L 146 69 L 146 68 L 144 68 L 144 67 L 143 67 L 142 65 L 140 65 L 140 64 L 139 64 L 138 62 L 136 62 L 136 60 L 135 60 L 135 59 L 134 59 L 134 58 L 132 57 L 132 55 L 131 55 L 131 53 L 130 53 L 130 50 L 129 50 L 129 26 L 130 26 L 130 24 L 131 24 L 131 22 L 133 21 L 133 19 L 134 19 L 134 18 L 135 18 L 136 16 L 138 16 L 139 14 L 141 14 L 141 13 L 143 13 L 143 12 L 146 12 L 146 11 L 157 11 L 157 12 L 161 12 L 161 13 L 163 13 L 163 14 L 165 14 L 165 15 L 167 15 L 168 17 L 169 17 L 169 16 L 172 16 L 173 14 L 175 14 L 175 15 L 176 15 L 176 52 L 174 52 L 174 53 L 164 53 L 164 52 L 158 52 L 158 28 L 157 28 L 157 26 L 156 26 L 156 25 L 154 25 L 154 24 L 150 24 L 150 25 L 149 25 L 149 26 L 147 27 L 147 29 L 146 29 L 146 44 L 147 44 L 147 49 L 148 49 L 148 51 L 149 51 L 149 53 L 150 53 L 150 54 L 151 54 L 151 55 L 152 55 L 152 56 L 153 56 L 153 57 L 154 57 L 154 58 L 155 58 L 156 60 L 158 60 L 158 61 L 160 61 L 160 62 L 161 62 L 162 64 L 164 64 L 164 65 L 166 65 L 166 66 L 167 66 L 167 67 L 168 67 L 168 68 L 169 68 L 169 69 L 171 70 L 171 72 L 172 72 L 172 74 L 174 75 L 174 78 L 175 78 L 175 84 L 176 84 L 176 179 L 175 179 L 175 184 L 174 184 L 174 186 L 173 186 L 173 188 L 172 188 L 172 189 L 171 189 L 171 190 L 170 190 L 170 191 L 169 191 L 169 192 L 168 192 L 167 194 L 165 194 L 165 195 L 163 195 L 163 196 L 161 196 L 161 197 L 157 197 L 157 198 L 147 198 L 147 197 L 144 197 L 144 196 L 141 196 L 141 195 L 139 195 L 138 193 L 136 193 L 136 192 L 135 192 L 135 191 L 133 190 L 133 188 L 131 187 L 131 185 L 130 185 L 130 183 L 129 183 Z M 86 178 L 87 178 L 87 182 L 88 182 L 88 184 L 89 184 L 89 186 L 91 187 L 91 189 L 92 189 L 92 190 L 93 190 L 93 189 L 94 189 L 94 187 L 96 186 L 96 184 L 97 184 L 97 182 L 98 182 L 98 178 L 99 178 L 99 176 L 98 176 L 98 32 L 99 32 L 99 31 L 98 31 L 98 27 L 97 27 L 97 25 L 96 25 L 96 23 L 94 22 L 94 20 L 93 20 L 93 18 L 92 18 L 92 16 L 91 16 L 91 15 L 92 15 L 92 14 L 123 14 L 123 18 L 122 18 L 122 20 L 120 21 L 120 23 L 118 24 L 118 27 L 117 27 L 117 29 L 116 29 L 116 180 L 117 180 L 117 182 L 118 182 L 118 184 L 119 184 L 119 186 L 120 186 L 120 188 L 121 188 L 121 189 L 122 189 L 122 191 L 123 191 L 123 195 L 2 195 L 2 192 L 3 192 L 3 190 L 5 189 L 5 187 L 6 187 L 6 185 L 7 185 L 7 183 L 8 183 L 8 181 L 9 181 L 9 82 L 10 82 L 10 77 L 11 77 L 11 75 L 12 75 L 12 73 L 14 72 L 14 70 L 15 70 L 15 69 L 16 69 L 16 68 L 17 68 L 17 67 L 18 67 L 19 65 L 21 65 L 22 63 L 24 63 L 24 62 L 26 62 L 27 60 L 29 60 L 29 59 L 30 59 L 30 58 L 31 58 L 32 56 L 34 56 L 34 54 L 35 54 L 35 53 L 37 52 L 37 50 L 38 50 L 38 46 L 39 46 L 39 28 L 37 27 L 37 25 L 34 25 L 34 24 L 32 24 L 32 25 L 30 25 L 30 26 L 28 27 L 28 29 L 27 29 L 27 52 L 26 52 L 26 53 L 13 53 L 13 52 L 10 52 L 10 51 L 9 51 L 9 15 L 10 15 L 10 14 L 12 14 L 12 15 L 14 15 L 14 16 L 16 16 L 16 17 L 17 17 L 17 16 L 19 16 L 20 14 L 22 14 L 22 13 L 24 13 L 24 12 L 28 12 L 28 11 L 40 11 L 40 12 L 42 12 L 42 13 L 44 13 L 44 14 L 46 14 L 46 15 L 48 15 L 48 16 L 49 16 L 49 17 L 50 17 L 50 18 L 51 18 L 51 19 L 53 20 L 53 22 L 54 22 L 54 24 L 55 24 L 55 26 L 56 26 L 56 30 L 57 30 L 57 60 L 59 60 L 59 59 L 60 59 L 60 58 L 61 58 L 62 56 L 64 56 L 64 54 L 66 53 L 66 51 L 67 51 L 67 49 L 68 49 L 68 44 L 69 44 L 69 14 L 86 14 Z M 346 182 L 347 182 L 347 184 L 349 185 L 349 187 L 350 187 L 350 189 L 351 189 L 351 190 L 353 189 L 353 187 L 355 186 L 355 184 L 356 184 L 356 182 L 357 182 L 357 27 L 356 27 L 356 25 L 354 24 L 354 22 L 353 22 L 353 20 L 352 20 L 352 19 L 350 20 L 350 22 L 349 22 L 349 24 L 348 24 L 348 25 L 347 25 L 347 27 L 346 27 Z M 536 69 L 534 69 L 534 70 L 533 70 L 533 71 L 532 71 L 532 72 L 531 72 L 531 73 L 530 73 L 530 74 L 529 74 L 529 75 L 527 76 L 527 78 L 526 78 L 526 80 L 525 80 L 525 87 L 524 87 L 524 179 L 525 179 L 525 182 L 526 182 L 526 184 L 528 185 L 528 187 L 529 187 L 529 189 L 532 189 L 532 187 L 533 187 L 533 185 L 534 185 L 534 184 L 535 184 L 535 182 L 536 182 Z M 566 69 L 564 69 L 564 70 L 563 70 L 562 72 L 560 72 L 560 74 L 559 74 L 559 75 L 558 75 L 558 76 L 556 77 L 556 79 L 555 79 L 555 83 L 554 83 L 554 181 L 556 182 L 556 184 L 557 184 L 557 186 L 558 186 L 558 188 L 559 188 L 560 190 L 561 190 L 561 188 L 563 187 L 563 185 L 564 185 L 564 183 L 565 183 L 565 181 L 566 181 Z M 206 181 L 207 181 L 207 183 L 208 183 L 208 184 L 211 184 L 211 185 L 213 185 L 213 184 L 215 184 L 215 183 L 217 182 L 217 179 L 218 179 L 218 86 L 217 86 L 217 80 L 216 80 L 216 78 L 215 78 L 215 76 L 214 76 L 214 75 L 213 75 L 213 74 L 212 74 L 212 73 L 211 73 L 210 71 L 208 71 L 208 70 L 207 70 L 206 68 L 204 68 L 203 66 L 201 66 L 201 65 L 200 65 L 199 63 L 197 63 L 197 62 L 196 62 L 196 61 L 195 61 L 195 60 L 194 60 L 194 59 L 192 58 L 192 56 L 191 56 L 191 54 L 190 54 L 190 51 L 189 51 L 189 48 L 188 48 L 188 28 L 189 28 L 189 25 L 190 25 L 190 23 L 191 23 L 191 21 L 192 21 L 192 20 L 193 20 L 193 19 L 194 19 L 194 18 L 195 18 L 195 17 L 196 17 L 197 15 L 199 15 L 200 13 L 203 13 L 203 12 L 206 12 L 206 11 L 217 11 L 217 12 L 221 12 L 221 13 L 223 13 L 223 14 L 225 14 L 225 15 L 226 15 L 226 16 L 228 16 L 228 17 L 229 17 L 229 16 L 231 16 L 232 14 L 235 14 L 235 52 L 234 52 L 234 53 L 221 53 L 221 52 L 218 52 L 218 49 L 217 49 L 217 48 L 218 48 L 218 30 L 217 30 L 217 27 L 216 27 L 216 25 L 213 25 L 213 24 L 210 24 L 210 25 L 208 25 L 208 26 L 207 26 L 207 28 L 206 28 L 206 48 L 207 48 L 207 50 L 208 50 L 208 52 L 209 52 L 209 54 L 210 54 L 210 55 L 211 55 L 211 56 L 212 56 L 213 58 L 215 58 L 216 60 L 218 60 L 219 62 L 221 62 L 222 64 L 224 64 L 224 65 L 225 65 L 225 66 L 226 66 L 226 67 L 227 67 L 227 68 L 228 68 L 228 69 L 229 69 L 229 70 L 230 70 L 230 71 L 232 72 L 232 74 L 233 74 L 233 77 L 234 77 L 234 80 L 235 80 L 235 182 L 234 182 L 234 184 L 233 184 L 233 187 L 231 188 L 231 190 L 230 190 L 229 192 L 227 192 L 227 193 L 226 193 L 225 195 L 223 195 L 223 196 L 220 196 L 220 197 L 216 197 L 216 198 L 207 198 L 207 197 L 203 197 L 203 196 L 200 196 L 199 194 L 197 194 L 197 193 L 196 193 L 196 192 L 195 192 L 195 191 L 194 191 L 194 190 L 193 190 L 193 189 L 191 188 L 191 186 L 190 186 L 190 184 L 189 184 L 189 181 L 188 181 L 188 86 L 189 86 L 189 85 L 205 85 L 205 86 L 206 86 Z M 258 29 L 244 29 L 244 28 L 243 28 L 243 15 L 244 15 L 244 14 L 404 14 L 404 15 L 405 15 L 405 52 L 403 52 L 403 53 L 400 53 L 400 52 L 392 52 L 392 53 L 389 53 L 389 52 L 387 51 L 387 28 L 376 28 L 376 29 L 375 29 L 375 74 L 404 74 L 404 75 L 405 75 L 405 88 L 375 88 L 375 181 L 387 181 L 387 122 L 388 122 L 388 121 L 405 121 L 405 194 L 404 194 L 404 195 L 291 195 L 291 192 L 292 192 L 292 190 L 293 190 L 293 188 L 295 187 L 295 185 L 296 185 L 296 183 L 297 183 L 297 181 L 298 181 L 298 27 L 296 26 L 296 24 L 295 24 L 295 22 L 293 21 L 293 19 L 292 19 L 292 17 L 291 17 L 291 27 L 290 27 L 290 29 L 276 29 L 276 182 L 277 182 L 277 184 L 279 185 L 279 187 L 280 187 L 280 189 L 282 190 L 282 192 L 283 192 L 283 195 L 251 195 L 251 191 L 253 190 L 253 188 L 254 188 L 254 186 L 255 186 L 255 184 L 256 184 L 256 182 L 258 181 Z M 442 14 L 442 18 L 440 19 L 440 21 L 439 21 L 439 23 L 437 24 L 437 26 L 436 26 L 436 28 L 435 28 L 435 181 L 437 182 L 437 184 L 438 184 L 438 186 L 439 186 L 439 188 L 440 188 L 440 190 L 441 190 L 441 192 L 442 192 L 442 195 L 410 195 L 410 192 L 411 192 L 411 190 L 413 189 L 413 187 L 414 187 L 414 185 L 415 185 L 415 183 L 417 182 L 417 27 L 416 27 L 416 25 L 414 24 L 414 22 L 413 22 L 413 20 L 411 19 L 411 16 L 410 16 L 410 14 Z M 526 59 L 528 59 L 528 57 L 530 57 L 530 56 L 531 56 L 531 55 L 533 54 L 533 52 L 535 51 L 535 48 L 536 48 L 536 27 L 535 27 L 534 25 L 532 25 L 532 24 L 530 24 L 530 25 L 527 25 L 527 26 L 525 27 L 525 52 L 523 52 L 523 53 L 522 53 L 522 52 L 521 52 L 521 53 L 520 53 L 520 52 L 512 52 L 512 53 L 509 53 L 509 52 L 507 52 L 507 14 L 510 14 L 510 15 L 511 15 L 511 16 L 513 16 L 513 17 L 515 17 L 515 16 L 516 16 L 517 14 L 519 14 L 519 13 L 522 13 L 522 12 L 525 12 L 525 11 L 536 11 L 536 12 L 540 12 L 540 13 L 542 13 L 542 14 L 544 14 L 544 15 L 545 15 L 545 16 L 546 16 L 546 17 L 547 17 L 547 18 L 548 18 L 548 19 L 549 19 L 549 20 L 551 21 L 551 23 L 552 23 L 552 25 L 553 25 L 553 28 L 554 28 L 554 60 L 556 60 L 556 59 L 558 59 L 558 58 L 559 58 L 559 57 L 560 57 L 560 56 L 561 56 L 561 55 L 563 54 L 563 52 L 565 51 L 565 48 L 566 48 L 566 15 L 567 15 L 567 14 L 584 14 L 584 181 L 585 181 L 585 183 L 586 183 L 586 185 L 587 185 L 587 187 L 589 188 L 589 190 L 590 190 L 590 192 L 591 192 L 591 195 L 500 195 L 500 194 L 499 194 L 499 193 L 500 193 L 500 191 L 501 191 L 501 189 L 502 189 L 502 187 L 504 186 L 504 184 L 505 184 L 505 182 L 506 182 L 506 180 L 507 180 L 507 80 L 508 80 L 508 76 L 509 76 L 509 74 L 510 74 L 510 72 L 511 72 L 511 71 L 512 71 L 512 70 L 513 70 L 513 69 L 514 69 L 514 68 L 515 68 L 515 67 L 516 67 L 516 66 L 517 66 L 518 64 L 520 64 L 521 62 L 523 62 L 523 61 L 525 61 Z M 27 181 L 28 181 L 28 183 L 30 184 L 30 186 L 31 186 L 31 188 L 32 188 L 32 190 L 33 190 L 33 189 L 35 188 L 35 186 L 36 186 L 36 184 L 37 184 L 37 183 L 38 183 L 38 181 L 39 181 L 39 69 L 37 69 L 37 70 L 36 70 L 35 72 L 33 72 L 33 73 L 31 74 L 31 76 L 29 77 L 29 79 L 28 79 L 28 82 L 27 82 Z M 447 86 L 448 86 L 448 85 L 464 85 L 464 86 L 465 86 L 465 181 L 466 181 L 466 183 L 467 183 L 467 184 L 470 184 L 470 185 L 472 185 L 472 184 L 475 184 L 475 182 L 476 182 L 476 180 L 477 180 L 477 83 L 476 83 L 476 80 L 475 80 L 475 78 L 474 78 L 474 76 L 473 76 L 473 75 L 472 75 L 472 74 L 471 74 L 471 73 L 470 73 L 470 72 L 469 72 L 468 70 L 466 70 L 466 69 L 465 69 L 464 67 L 462 67 L 461 65 L 459 65 L 458 63 L 456 63 L 456 62 L 455 62 L 455 61 L 453 60 L 453 58 L 452 58 L 452 57 L 450 56 L 450 53 L 449 53 L 449 51 L 448 51 L 448 46 L 447 46 L 447 29 L 448 29 L 448 25 L 449 25 L 449 23 L 451 22 L 451 20 L 452 20 L 452 19 L 453 19 L 453 18 L 454 18 L 454 17 L 455 17 L 456 15 L 458 15 L 458 14 L 460 14 L 460 13 L 462 13 L 462 12 L 464 12 L 464 11 L 477 11 L 477 12 L 480 12 L 480 13 L 482 13 L 482 14 L 484 14 L 484 15 L 485 15 L 485 16 L 487 16 L 487 17 L 488 17 L 488 16 L 490 16 L 490 15 L 492 15 L 492 14 L 494 14 L 494 15 L 495 15 L 495 52 L 477 52 L 477 28 L 476 28 L 476 26 L 474 26 L 473 24 L 469 24 L 469 25 L 467 25 L 467 26 L 466 26 L 466 28 L 465 28 L 465 46 L 466 46 L 466 50 L 467 50 L 467 52 L 468 52 L 468 53 L 470 54 L 470 56 L 472 56 L 472 58 L 474 58 L 475 60 L 477 60 L 478 62 L 480 62 L 481 64 L 483 64 L 483 65 L 484 65 L 485 67 L 487 67 L 487 68 L 488 68 L 488 70 L 490 70 L 490 72 L 491 72 L 491 74 L 492 74 L 492 76 L 493 76 L 493 78 L 494 78 L 494 84 L 495 84 L 495 179 L 494 179 L 494 183 L 493 183 L 493 186 L 491 187 L 491 189 L 490 189 L 490 190 L 489 190 L 489 191 L 488 191 L 487 193 L 485 193 L 484 195 L 482 195 L 482 196 L 480 196 L 480 197 L 476 197 L 476 198 L 466 198 L 466 197 L 462 197 L 462 196 L 460 196 L 460 195 L 458 195 L 458 194 L 456 194 L 456 193 L 455 193 L 455 192 L 454 192 L 454 191 L 453 191 L 453 190 L 451 189 L 451 187 L 450 187 L 450 186 L 449 186 L 449 184 L 448 184 L 448 179 L 447 179 Z M 316 145 L 328 145 L 328 89 L 327 89 L 327 88 L 316 88 Z M 316 74 L 328 74 L 328 28 L 327 28 L 327 26 L 325 25 L 325 23 L 324 23 L 324 21 L 323 21 L 322 19 L 321 19 L 321 21 L 320 21 L 320 23 L 318 24 L 318 26 L 317 26 L 317 28 L 316 28 Z" fill="url(#misstheismGold)" />
+      </svg>
     </div>
-    <h1>MODIVO</h1>
-    <div class="sub">Branded Attendance System</div>
+    <div class="sub">Attendance &amp; Shift System</div>
     <p>Tanggal &amp; jam diambil otomatis dari sistem saat absen · tidak bisa diisi manual</p>
   </header>
 
@@ -1197,7 +1169,7 @@
     targetBlend = (themeKey === 'balatro') ? 1.0 : 0.0;
 
     if (save) {
-      try { localStorage.setItem('modivo_bg_theme', themeKey); } catch(e){}
+      try { localStorage.setItem('misstheism_bg_theme', themeKey); } catch(e){}
     }
     if (toggleBtn) {
       const nextThemeName = (themeKey === 'ghostfibers') ? 'Balatro Classic' : 'Ghost Fibers';
@@ -1208,7 +1180,7 @@
 
   // Load saved preference (Default to Ghost Fibers)
   try {
-    const savedTheme = localStorage.getItem('modivo_bg_theme');
+    const savedTheme = localStorage.getItem('misstheism_bg_theme') || localStorage.getItem('modivo_bg_theme');
     if (savedTheme === 'ghostfibers' || savedTheme === 'balatro') {
       applyTheme(savedTheme, false);
       themeBlend = targetBlend; // snap on initial load
@@ -1895,7 +1867,7 @@ function renderHostManageTable(log){
     return `<tr>
       <td>${idx + 1}</td>
       <td style="text-align:left;font-weight:600;color:var(--silver);">${h}</td>
-      <td><span class="shift-pill" style="background:rgba(43,39,23,0.9);border:1px solid var(--card-border);color:var(--gold-light);">Staff Host</span></td>
+      <td><span class="shift-pill" style="background:rgba(255,255,255,0.08);border:1px solid var(--card-border);color:var(--gold-light);">Staff Host</span></td>
       <td><span style="color:var(--gold-light);font-weight:600;">${totalLog}</span> absen</td>
       <td>
         <button class="btn-in btn-edit-host" data-name="${h}" style="padding:5px 10px;font-size:10.5px;margin-right:4px;">Ubah</button>
@@ -2208,7 +2180,7 @@ document.getElementById('btnExport').addEventListener('click', async ()=>{
   const ws = XLSX.utils.json_to_sheet(rows);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Absensi');
-  XLSX.writeFile(wb, `absensi-modivo-${todayStr()}.xlsx`);
+  XLSX.writeFile(wb, `absensi-misstheism-${todayStr()}.xlsx`);
 });
 
 // ---------- RESET SEMUA DATA (MENGECUALIKAN BINTANG) ----------

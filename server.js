@@ -9,7 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
-// Serve static assets from root directory
+// Serve static assets from public/assets and root directory
+app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 app.use(express.static(__dirname));
 
 // Fallback to index.html for SPA routing
@@ -18,5 +19,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, HOST, () => {
-  console.log(`Modivo Attendance Server running at http://${HOST}:${PORT}`);
+  console.log(`MISSTHEISM Attendance Server running at http://${HOST}:${PORT}`);
 });
