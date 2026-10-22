@@ -553,12 +553,16 @@
           Tambah nama staff/host baru agar langsung muncul di pilihan absen, ubah nama, atau hapus nama yang sudah tidak aktif. Data tersinkron otomatis ke seluruh perangkat secara real-time.
         </p>
         <div class="row" style="margin-bottom:18px;">
-          <div style="flex:2;min-width:220px;">
+          <div style="flex:2;min-width:200px;">
             <label>Nama Staff / Host Baru</label>
             <input type="text" id="newHostNameInput" placeholder="Ketik nama staff baru...">
           </div>
+          <div style="flex:2;min-width:200px;">
+            <label>Tag Jabatan / Peran</label>
+            <input type="text" id="newHostRoleInput" placeholder="Contoh: Senior Host, Staff, dll" value="Staff Host">
+          </div>
           <div>
-            <button class="btn-in" id="btnAddHostName" style="height:43px;">+ Tambah Nama</button>
+            <button class="btn-in" id="btnAddHostName" style="height:43px;">+ Tambah Staff</button>
           </div>
         </div>
         <div class="status-box" id="hostManageStatus"></div>
@@ -570,8 +574,8 @@
               <thead>
                 <tr>
                   <th style="width:45px;">No</th>
-                  <th style="text-align:left;">Nama Staff</th>
-                  <th style="width:130px;">Peran</th>
+                  <th style="text-align:left;">Nama Staff (Klik Ubah)</th>
+                  <th style="width:130px;">Peran (Klik Ubah)</th>
                   <th style="width:130px;">Total Absensi</th>
                   <th style="width:170px;">Aksi</th>
                 </tr>
@@ -1245,10 +1249,15 @@ async function testFirebaseConnection() {
 }
 testFirebaseConnection();
 
-const DEFAULT_HOSTS = ['Ali', 'Amat', 'Mala', 'Sisil'];
+const DEFAULT_HOSTS = [
+  { name: 'Ali', role: 'Staff Host' },
+  { name: 'Amat', role: 'Staff Host' },
+  { name: 'Mala', role: 'Staff Host' },
+  { name: 'Sisil', role: 'Staff Host' }
+];
 const ADMIN_NAME = 'Bintang';
-let HOSTS = [...DEFAULT_HOSTS].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
-let NAMES = [...HOSTS, ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+let HOSTS = [...DEFAULT_HOSTS].sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
+let NAMES = [...HOSTS.map(h => h.name), ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
 
 const RESET_CODE = '19112191';
 const DEFAULT_ADMIN_PASS = 'minke';
@@ -1310,7 +1319,7 @@ function showCustomConfirm(msg, title = 'Konfirmasi') {
   });
 }
 
-function showCustomPrompt(msg, label = 'Masukkan Nilai', title = 'Verifikasi') {
+function showCustomPrompt(msg, label = 'Masukkan Nilai', title = 'Verifikasi', defaultValue = '') {
   return new Promise((resolve) => {
     const modal = document.getElementById('customDialogModal');
     document.getElementById('dialogTitle').textContent = title;
@@ -1319,7 +1328,7 @@ function showCustomPrompt(msg, label = 'Masukkan Nilai', title = 'Verifikasi') {
     const inputField = document.getElementById('dialogInput');
     const inputLabel = document.getElementById('dialogInputLabel');
     inputLabel.textContent = label;
-    inputField.value = '';
+    inputField.value = defaultValue;
     inputWrap.classList.remove('hidden');
     document.getElementById('dialogBtnCancel').classList.remove('hidden');
     const okBtn = document.getElementById('dialogBtnOk');
@@ -1391,7 +1400,7 @@ async function getHostsList(){
   try{
     const snap = await getDoc(SETTINGS_DOC);
     if(snap.exists() && Array.isArray(snap.data().hosts) && snap.data().hosts.length > 0){
-      return snap.data().hosts;
+      return snap.data().hosts.map(h => typeof h === 'string' ? { name: h, role: 'Staff Host' } : h);
     }
     return DEFAULT_HOSTS;
   }catch(e){
@@ -1662,8 +1671,8 @@ function showStatus(elId, msg, ok){
 // ---------- INITIALIZE HOSTS FROM FIREBASE & REAL-TIME LISTENERS ----------
 async function initHosts(){
   const savedHosts = await getHostsList();
-  HOSTS = savedHosts.sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
-  NAMES = [...HOSTS, ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+  HOSTS = savedHosts.sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
+  NAMES = [...HOSTS.map(h => h.name), ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
   updateAllDropdowns();
   renderPublicRekap();
 }
@@ -1680,11 +1689,11 @@ onSnapshot(LOG_DOC, ()=>{
 // Listener untuk settings (hosts dan konfigurasi)
 onSnapshot(SETTINGS_DOC, (snap)=>{
   if(snap.exists() && Array.isArray(snap.data().hosts) && snap.data().hosts.length > 0){
-    HOSTS = snap.data().hosts.sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+    HOSTS = snap.data().hosts.map(h => typeof h === 'string' ? { name: h, role: 'Staff Host' } : h).sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
   } else {
-    HOSTS = [...DEFAULT_HOSTS].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+    HOSTS = [...DEFAULT_HOSTS].sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
   }
-  NAMES = [...HOSTS, ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+  NAMES = [...HOSTS.map(h => h.name), ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
   updateAllDropdowns();
   renderPublicRekap();
   if(document.getElementById('adminDashboard') &&
@@ -1826,8 +1835,10 @@ document.getElementById('btnSavePass').addEventListener('click', async ()=>{
 
 // ---------- KELOLA NAMA HOST / STAFF ----------
 document.getElementById('btnAddHostName').addEventListener('click', async ()=>{
-  const input = document.getElementById('newHostNameInput');
-  const newName = input.value.trim();
+  const nameInput = document.getElementById('newHostNameInput');
+  const roleInput = document.getElementById('newHostRoleInput');
+  const newName = nameInput.value.trim();
+  const newRole = roleInput ? roleInput.value.trim() || 'Staff Host' : 'Staff Host';
 
   if(!newName){
     showStatus('hostManageStatus', 'Silakan ketik nama staff terlebih dahulu.', false);
@@ -1838,23 +1849,29 @@ document.getElementById('btnAddHostName').addEventListener('click', async ()=>{
     return;
   }
 
-  const updatedHosts = [...HOSTS, newName].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+  const updatedHosts = [...HOSTS, { name: newName, role: newRole }].sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
   HOSTS = updatedHosts;
-  NAMES = [...HOSTS, ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+  NAMES = [...HOSTS.map(h => h.name), ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
   await saveHostsList(updatedHosts);
 
-  input.value = '';
-  showStatus('hostManageStatus', `Nama "${newName}" berhasil ditambahkan ke daftar staff absen!`, true);
+  nameInput.value = '';
+  if(roleInput) roleInput.value = 'Staff Host';
+  showStatus('hostManageStatus', `Staff "${newName}" (${newRole}) berhasil ditambahkan ke daftar staff absen!`, true);
   updateAllDropdowns();
   renderAdmin();
   renderPublicRekap();
 });
 
-// Enter key in host input
-document.getElementById('newHostNameInput').addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter'){
-    e.preventDefault();
-    document.getElementById('btnAddHostName').click();
+// Enter key in host inputs
+['newHostNameInput', 'newHostRoleInput'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el){
+    el.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        document.getElementById('btnAddHostName').click();
+      }
+    });
   }
 });
 
@@ -1863,15 +1880,15 @@ function renderHostManageTable(log){
   if(!tbody) return;
 
   const rows = HOSTS.map((h, idx) => {
-    const totalLog = log.filter(r => sameName(r.name, h)).length;
+    const totalLog = log.filter(r => sameName(r.name, h.name)).length;
     return `<tr>
       <td>${idx + 1}</td>
-      <td style="text-align:left;font-weight:600;color:var(--silver);">${h}</td>
-      <td><span class="shift-pill" style="background:rgba(255,255,255,0.08);border:1px solid var(--card-border);color:var(--gold-light);">Staff Host</span></td>
+      <td style="text-align:left;font-weight:600;color:var(--silver);">${h.name}</td>
+      <td><span class="shift-pill" style="background:rgba(255,255,255,0.08);border:1px solid var(--card-border);color:var(--gold-light);">${h.role || 'Staff Host'}</span></td>
       <td><span style="color:var(--gold-light);font-weight:600;">${totalLog}</span> absen</td>
       <td>
-        <button class="btn-in btn-edit-host" data-name="${h}" style="padding:5px 10px;font-size:10.5px;margin-right:4px;">Ubah</button>
-        <button class="btn-danger btn-del-host" data-name="${h}" style="padding:5px 10px;font-size:10.5px;">Hapus</button>
+        <button class="btn-in btn-edit-host" data-name="${h.name}" style="padding:5px 10px;font-size:10.5px;margin-right:4px;">Ubah</button>
+        <button class="btn-danger btn-del-host" data-name="${h.name}" style="padding:5px 10px;font-size:10.5px;">Hapus</button>
       </td>
     </tr>`;
   }).join('');
@@ -1882,7 +1899,10 @@ function renderHostManageTable(log){
     <td style="text-align:left;"><span class="name-admin">Bintang</span></td>
     <td><span class="shift-pill" style="background:var(--card-border);color:var(--text);font-weight:500;">Super Admin</span></td>
     <td><span>${adminTotal}</span> absen</td>
-    <td><span style="color:var(--text-muted);font-size:11px;font-style:italic;">Sistem / Terkunci</span></td>
+    <td>
+      <button class="btn-in btn-edit-host" data-name="Bintang" style="padding:5px 10px;font-size:10.5px;margin-right:4px;">Ubah</button>
+      <button class="btn-danger btn-del-host" data-name="Bintang" style="padding:5px 10px;font-size:10.5px;">Hapus</button>
+    </td>
   </tr>`;
 
   tbody.innerHTML = rows + adminRow;
@@ -1890,35 +1910,43 @@ function renderHostManageTable(log){
   tbody.querySelectorAll('.btn-edit-host').forEach(btn => {
     btn.addEventListener('click', async () => {
       const oldName = btn.dataset.name;
-      const newName = await showCustomPrompt(`Ubah nama "${oldName}" menjadi:`, 'Nama Baru', 'Edit Nama Staff');
+      const currentHost = HOSTS.find(h => h.name === oldName) || { name: oldName, role: 'Staff Host' };
+
+      const newName = await showCustomPrompt(`Ubah nama staff "${oldName}":`, 'Nama Staff Baru', 'Edit Nama & Jabatan Staff', currentHost.name);
       if(!newName || !newName.trim()) return;
-      const trimmed = newName.trim();
-      if(trimmed.toLowerCase() === oldName.toLowerCase()) return;
-      if(NAMES.some(n => n.toLowerCase() === trimmed.toLowerCase())){
-        await showCustomAlert(`Nama "${trimmed}" sudah ada di daftar!`, 'Nama Sudah Terdaftar');
+      const trimmedName = newName.trim();
+
+      const newRole = await showCustomPrompt(`Ubah tag jabatan / peran untuk "${trimmedName}":`, 'Tag Jabatan / Peran Baru', 'Edit Nama & Jabatan Staff', currentHost.role);
+      if(newRole === null) return;
+      const trimmedRole = newRole.trim() || 'Staff Host';
+
+      if(trimmedName.toLowerCase() !== oldName.toLowerCase() && NAMES.some(n => n.toLowerCase() === trimmedName.toLowerCase())){
+        await showCustomAlert(`Nama "${trimmedName}" sudah ada di daftar!`, 'Nama Sudah Terdaftar');
         return;
       }
 
-      const updatedHosts = HOSTS.map(h => h === oldName ? trimmed : h).sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+      const updatedHosts = HOSTS.map(h => h.name === oldName ? { name: trimmedName, role: trimmedRole } : h).sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
       HOSTS = updatedHosts;
-      NAMES = [...HOSTS, ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+      NAMES = [...HOSTS.map(h => h.name), ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
       await saveHostsList(updatedHosts);
 
       // Otomatis sinkronkan riwayat absen yang memakai nama lama
-      const currentLog = await getLog();
-      let changed = false;
-      const updatedLog = currentLog.map(r => {
-        if(r.name === oldName){
-          changed = true;
-          return { ...r, name: trimmed };
+      if(trimmedName !== oldName){
+        const currentLog = await getLog();
+        let changed = false;
+        const updatedLog = currentLog.map(r => {
+          if(r.name === oldName){
+            changed = true;
+            return { ...r, name: trimmedName };
+          }
+          return r;
+        });
+        if(changed){
+          await saveLog(updatedLog);
         }
-        return r;
-      });
-      if(changed){
-        await saveLog(updatedLog);
       }
 
-      showStatus('hostManageStatus', `Nama "${oldName}" berhasil diubah menjadi "${trimmed}". Riwayat absen juga diperbarui.`, true);
+      showStatus('hostManageStatus', `Data staff "${trimmedName}" (${trimmedRole}) berhasil diperbarui!`, true);
       updateAllDropdowns();
       renderAdmin();
       renderPublicRekap();
@@ -1937,9 +1965,9 @@ function renderHostManageTable(log){
       const confirmed = await showCustomConfirm(msg, 'Hapus Nama Staff');
       if(!confirmed) return;
 
-      const updatedHosts = HOSTS.filter(h => h !== targetName).sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+      const updatedHosts = HOSTS.filter(h => h.name !== targetName).sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
       HOSTS = updatedHosts;
-      NAMES = [...HOSTS, ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+      NAMES = [...HOSTS.map(h => h.name), ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
       await saveHostsList(updatedHosts);
 
       showStatus('hostManageStatus', `Nama "${targetName}" telah dihapus dari daftar pilihan absen.`, true);
