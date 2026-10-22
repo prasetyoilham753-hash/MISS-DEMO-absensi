@@ -1672,7 +1672,7 @@ function showStatus(elId, msg, ok){
 async function initHosts(){
   const savedHosts = await getHostsList();
   HOSTS = savedHosts.sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
-  NAMES = [...HOSTS.map(h => h.name), ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+  NAMES = HOSTS.map(h => h.name).sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
   updateAllDropdowns();
   renderPublicRekap();
 }
@@ -1693,7 +1693,7 @@ onSnapshot(SETTINGS_DOC, (snap)=>{
   } else {
     HOSTS = [...DEFAULT_HOSTS].sort((a,b)=>a.name.localeCompare(b.name, 'id', {sensitivity:'base'}));
   }
-  NAMES = [...HOSTS.map(h => h.name), ADMIN_NAME].sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
+  NAMES = HOSTS.map(h => h.name).sort((a,b)=>a.localeCompare(b, 'id', {sensitivity:'base'}));
   updateAllDropdowns();
   renderPublicRekap();
   if(document.getElementById('adminDashboard') &&
@@ -1893,19 +1893,8 @@ function renderHostManageTable(log){
     </tr>`;
   }).join('');
 
-  const adminTotal = log.filter(r => isAdminName(r.name)).length;
-  const adminRow = `<tr>
-    <td>#</td>
-    <td style="text-align:left;"><span class="name-admin">Bintang</span></td>
-    <td><span class="shift-pill" style="background:var(--card-border);color:var(--text);font-weight:500;">Super Admin</span></td>
-    <td><span>${adminTotal}</span> absen</td>
-    <td>
-      <button class="btn-in btn-edit-host" data-name="Bintang" style="padding:5px 10px;font-size:10.5px;margin-right:4px;">Ubah</button>
-      <button class="btn-danger btn-del-host" data-name="Bintang" style="padding:5px 10px;font-size:10.5px;">Hapus</button>
-    </td>
-  </tr>`;
+  tbody.innerHTML = rows;
 
-  tbody.innerHTML = rows + adminRow;
 
   tbody.querySelectorAll('.btn-edit-host').forEach(btn => {
     btn.addEventListener('click', async () => {
