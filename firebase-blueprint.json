@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "Settings": {
+      "title": "Settings",
+      "description": "Application settings including host list",
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "description": "List of host/staff names"
+        }
+      }
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Individual attendance log record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "description": "Unique timestamp/id"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Staff name"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Date in YYYY-MM-DD"
+        },
+        "shift": {
+          "type": "string",
+          "maxLength": 10,
+          "description": "Shift code A, B, C, D"
+        },
+        "jamAbsen": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Check-in time string"
+        }
+      },
+      "required": ["id", "name", "date"]
+    }
+  },
+  "firestore": {
+    "/settings/config": {
+      "schema": { "$ref": "#/entities/Settings" },
+      "description": "App settings configuration"
+    },
+    "/attendance_log/{recordId}": {
+      "schema": { "$ref": "#/entities/AttendanceRecord" },
+      "description": "Attendance log records collection"
+    }
+  }
+}
