@@ -1182,19 +1182,19 @@
     }
   }
 
-  // Load saved preference (Default to Ghost Fibers)
+  // Load saved preference (Default to Balatro)
   try {
     const savedTheme = localStorage.getItem('misstheism_bg_theme') || localStorage.getItem('modivo_bg_theme');
     if (savedTheme === 'ghostfibers' || savedTheme === 'balatro') {
       applyTheme(savedTheme, false);
       themeBlend = targetBlend; // snap on initial load
     } else {
-      applyTheme('ghostfibers', false);
-      themeBlend = 0.0;
+      applyTheme('balatro', false);
+      themeBlend = 1.0;
     }
   } catch(e){
-    applyTheme('ghostfibers', false);
-    themeBlend = 0.0;
+    applyTheme('balatro', false);
+    themeBlend = 1.0;
   }
 
   let moonRotation = 0;
